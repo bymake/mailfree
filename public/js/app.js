@@ -5,7 +5,6 @@
 
 import { cacheGet, cacheSet, setCurrentUserKey, getCurrentUserKey } from './storage.js';
 import { openForwardDialog, toggleFavorite, injectDialogStyles } from './mailbox-settings.js';
-import IconHelper from './modules/icons.js';
 
 // 导入模块
 import { formatTs, formatTsMobile, extractCode, escapeHtml, escapeAttr } from './modules/app/ui-helpers.js';
@@ -96,16 +95,7 @@ async function refresh() {
     const ctrl = new AbortController(); const timeout = setTimeout(() => ctrl.abort(), 8000);
     let emails = [];
     try { const r = await api(url, { signal: ctrl.signal }); emails = await r.json(); } finally { clearTimeout(timeout); }
-    if (!Array.isArray(emails) || !emails.length) {
-      els.list.innerHTML = `<div class="empty-state">
-        <svg class="empty-icon" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-          <use href="/icons/sprites.svg#icon-inbox"/>
-        </svg>
-        <span class="empty-text">暂无邮件</span>
-      </div>`;
-      if (els.pager) els.pager.style.display = 'none';
-      return;
-    }
+    if (!Array.isArray(emails) || !emails.length) { els.list.innerHTML = '<div style="text-align:center;color:#64748b">📭 暂无邮件</div>'; if (els.pager) els.pager.style.display = 'none'; return; }
     const isMobile = window.matchMedia?.('(max-width: 900px)').matches;
     els.list.innerHTML = sliceByPage(emails, els).map(e => renderEmailItem(e, isMobile)).join('');
     if (!isSentViewActive()) prefetchEmails(emails, api);
@@ -132,13 +122,7 @@ async function loadMailboxes(opts = {}) {
   finally { setLoading(false); if (els.mbLoading) els.mbLoading.style.display = 'none'; }
 }
 
-function updateMailboxInfoUI(info) {
-  if (!info) return;
-  if (els.favoriteIcon && els.favoriteText) {
-    els.favoriteIcon.innerHTML = IconHelper.star(18, 18, info.is_favorite);
-    els.favoriteText.textContent = info.is_favorite ? '已收藏' : '收藏邮箱';
-  }
-}
+function updateMailboxInfoUI(info) { if (!info) return; if (els.favoriteIcon && els.favoriteText) { els.favoriteIcon.textContent = info.is_favorite ? '⭐' : '☆'; els.favoriteText.textContent = info.is_favorite ? '已收藏' : '收藏'; }}
 
 // 全局函数
 window.selectMailbox = (addr) => selectMailboxAddress(addr, els, api, refresh, autoRefreshCallback, updateMailboxInfoUI);

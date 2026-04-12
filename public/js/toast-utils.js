@@ -27,14 +27,12 @@ const CONTAINER_STYLES = {
   top: '24px',
   left: '24px',
   right: 'auto',
-  bottom: 'auto',
   zIndex: '2000',
   display: 'flex',
   flexDirection: 'column',
   gap: '12px',
   maxWidth: '420px',
-  pointerEvents: 'none',
-  opacity: '1'
+  pointerEvents: 'none'
 };
 
 /**
@@ -60,13 +58,10 @@ function ensureToastContainer() {
     container.className = 'toast';
     document.body.appendChild(container);
   }
-
-  // 重置可能与CSS类冲突的样式属性
-  container.style.cssText = '';
-
+  
   // 应用容器样式 - 确保左上角显示
   Object.assign(container.style, CONTAINER_STYLES);
-
+  
   return container;
 }
 

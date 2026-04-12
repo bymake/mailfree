@@ -10,53 +10,50 @@
   gap: 8px;
   padding: 10px 20px;
   font-size: 14px;
-  font-weight: 500;
+  font-weight: 600;
   line-height: 1.4;
   text-decoration: none;
-  border-radius: var(--radius-md);
-  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
   cursor: pointer;
   transition: var(--transition);
   white-space: nowrap;
   user-select: none;
+  background: var(--card);
+  color: var(--ink);
+  height: 44px;
 }
 
 .btn:disabled {
-  opacity: 0.6;
+  opacity: 0.5;
   cursor: not-allowed;
   pointer-events: none;
 }
 
 /* 主要按钮 */
 .btn-primary {
-  background: var(--primary-gradient);
-  color: var(--text-inverse);
-  border-color: transparent;
-  box-shadow: 0 2px 8px rgba(var(--primary-rgb), 0.25);
+  background: var(--primary);
+  color: var(--bg);
+  border-color: var(--primary);
 }
 
 .btn-primary:hover {
   background: var(--primary-hover);
-  box-shadow: 0 4px 16px rgba(var(--primary-rgb), 0.35);
-  transform: translateY(-1px);
-}
-
-.btn-primary:active {
-  background: var(--primary-active);
-  transform: translateY(0);
+  border-color: var(--primary-hover);
+  color: var(--bg);
 }
 
 /* 次要按钮 */
 .btn-secondary {
-  background: var(--card);
-  color: var(--text);
+  background: var(--surface);
+  color: var(--ink);
   border-color: var(--border);
 }
 
 .btn-secondary:hover {
-  background: var(--card-hover);
   border-color: var(--primary);
   color: var(--primary);
+  background: var(--primary-light);
 }
 
 /* 轮廓按钮 */
@@ -73,56 +70,59 @@
 /* 幽灵按钮 */
 .btn-ghost {
   background: transparent;
-  color: var(--text-light);
+  color: var(--text-muted);
   border-color: transparent;
 }
 
 .btn-ghost:hover {
   background: var(--primary-light);
   color: var(--primary);
+  border-color: var(--primary);
 }
 
 /* 危险按钮 */
 .btn-danger {
-  background: var(--danger-gradient);
-  color: var(--text-inverse);
-  border-color: transparent;
-  box-shadow: 0 2px 8px rgba(239, 68, 68, 0.25);
+  background: var(--danger);
+  color: white;
+  border-color: var(--danger);
 }
 
 .btn-danger:hover {
   background: var(--danger-hover);
-  box-shadow: 0 4px 16px rgba(239, 68, 68, 0.35);
+  border-color: var(--danger-hover);
 }
 
 /* 成功按钮 */
 .btn-success {
-  background: var(--success-gradient);
-  color: var(--text-inverse);
-  border-color: transparent;
+  background: var(--primary);
+  color: var(--bg);
+  border-color: var(--primary);
 }
 
 .btn-success:hover {
-  background: var(--success-hover);
+  background: var(--primary-hover);
+  border-color: var(--primary-hover);
 }
 
 /* 按钮尺寸 */
 .btn-sm {
-  padding: 6px 12px;
+  padding: 5px 10px;
   font-size: 12px;
-  border-radius: var(--radius-sm);
+  height: 32px;
+  border-radius: var(--radius-xs);
 }
 
 .btn-lg {
-  padding: 14px 28px;
+  padding: 13px 26px;
   font-size: 16px;
-  border-radius: var(--radius-lg);
+  height: 52px;
+  border-radius: var(--radius);
 }
 
 .btn-xl {
-  padding: 18px 36px;
-  font-size: 18px;
-  border-radius: var(--radius-lg);
+  padding: 16px 32px;
+  font-size: 17px;
+  height: 56px;
 }
 
 /* 块级按钮 */
@@ -161,11 +161,11 @@
 }
 
 .btn-group .btn:first-child {
-  border-radius: var(--radius-md) 0 0 var(--radius-md);
+  border-radius: var(--radius-sm) 0 0 var(--radius-sm);
 }
 
 .btn-group .btn:last-child {
-  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
 }
 
 .btn-group .btn:not(:first-child) {
