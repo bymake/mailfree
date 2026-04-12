@@ -4,7 +4,6 @@
 
 /* 基础卡片 */
 .card {
-  background: var(--card);
   border-radius: var(--radius);
   border: 1px solid var(--border);
   box-shadow: var(--shadow);
@@ -15,7 +14,6 @@
 
 /* 毛玻璃卡片 */
 .card-glass {
-  background: var(--card-glass);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border: 1px solid var(--border);
@@ -83,7 +81,6 @@
 /* 高亮卡片 */
 .card-highlight {
   border-color: var(--primary);
-  background: var(--primary-light);
 }
 
 /* 卡片网格 */
@@ -95,7 +92,6 @@
 
 /* 邮箱卡片 */
 .mailbox-card {
-  background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: var(--spacing-md);
@@ -106,7 +102,6 @@
 
 .mailbox-card.pinned {
   border-color: var(--warning);
-  background: rgba(245, 185, 58, 0.08);
 }
 
 .mailbox-card .card-actions {
@@ -117,7 +112,6 @@
 
 /* 邮件卡片 */
 .email-card {
-  background: var(--surface);
   border-radius: var(--radius-sm);
   border: 1px solid var(--border);
   padding: var(--spacing-md);
@@ -127,7 +121,6 @@
 .email-card
 
 .email-card.unread {
-  background: var(--primary-light);
   border-color: var(--primary);
 }
 

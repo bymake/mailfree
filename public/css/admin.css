@@ -14,7 +14,6 @@
 }
 
 .admin-page {
-  background: var(--bg);
   position: relative;
 }
 
@@ -34,7 +33,6 @@
 
 /* 卡片 */
 .admin-page .card {
-  background: var(--card);
   border-radius: var(--radius);
   border: 1px solid var(--border);
   box-shadow: var(--shadow);
@@ -97,14 +95,12 @@
   justify-content: center;
   gap: 8px;
   cursor: pointer;
-  background: var(--surface);
   border: 1px solid var(--border);
   color: var(--ink);
   font-family: inherit;
 }
 
 .generate-action .btn-primary {
-  background: var(--primary);
   border-color: var(--primary);
   color: var(--bg);
 }
@@ -112,7 +108,6 @@
 .generate-action .btn-primary
 
 .generate-action .btn-secondary {
-  background: var(--surface);
   border-color: var(--border);
   color: var(--ink);
 }
@@ -134,11 +129,9 @@
 }
 
 .user-mailboxes::-webkit-scrollbar-track {
-  background: transparent;
 }
 
 .user-mailboxes::-webkit-scrollbar-thumb {
-  background: var(--border);
   border-radius: 999px;
 }
 
@@ -153,7 +146,6 @@
   justify-content: space-between;
   align-items: center;
   padding: 10px 14px;
-  background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
 }
@@ -174,7 +166,6 @@
 .mailbox-item .btn.danger {
   padding: 4px 10px;
   font-size: 12px;
-  background: rgba(239, 68, 68, 0.1);
   color: var(--danger);
   border: 1px solid rgba(239, 68, 68, 0.2);
   border-radius: var(--radius-xs);
@@ -198,7 +189,6 @@
   justify-content: space-between;
   align-items: center;
   padding: 10px 14px;
-  background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
 }
@@ -244,7 +234,6 @@
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  background: var(--surface);
   border: 1px solid var(--border);
   color: var(--text-muted);
   font-family: inherit;
@@ -253,7 +242,6 @@
 .mailbox-actions .btn
 
 .mailbox-actions .btn-danger {
-  background: rgba(239, 68, 68, 0.1);
   border-color: rgba(239, 68, 68, 0.2);
   color: var(--danger);
 }
@@ -273,11 +261,9 @@
 }
 
 .admin-left .table-container::-webkit-scrollbar-track {
-  background: transparent;
 }
 
 .admin-left .table-container::-webkit-scrollbar-thumb {
-  background: var(--border);
   border-radius: 999px;
 }
 
@@ -288,7 +274,6 @@
 }
 
 .admin-left .table thead {
-  background: var(--surface);
 }
 
 .admin-left .table thead th {
@@ -317,7 +302,6 @@
 .admin-left .table tbody tr.clickable
 
 .admin-left .table tbody tr.active {
-  background: var(--primary-light);
 }
 
 .admin-left .table tbody td {
@@ -345,13 +329,11 @@
 }
 
 .role-admin {
-  background: rgba(30, 214, 184, 0.12);
   color: var(--primary);
   border: 1px solid var(--border-accent);
 }
 
 .role-user {
-  background: var(--surface);
   color: var(--text-muted);
   border: 1px solid var(--border);
 }
@@ -363,26 +345,22 @@
   border-radius: var(--radius-full);
   font-size: 11px;
   font-weight: 600;
-  background: var(--surface);
   color: var(--text-muted);
   border: 1px solid var(--border);
 }
 
 .can-send-yes {
   color: var(--primary);
-  background: rgba(30, 214, 184, 0.1);
   border: 1px solid var(--border-accent);
 }
 
 .can-send-no {
   color: var(--text-muted);
-  background: var(--surface);
   border: 1px solid var(--border);
 }
 
 /* 管理员页面通用按钮 */
 .admin-page .btn {
-  background: var(--surface);
   border: 1px solid var(--border);
   color: var(--ink);
   border-radius: var(--radius-sm);
@@ -410,7 +388,6 @@
   padding: 10px 14px;
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
-  background: var(--surface);
   color: var(--ink);
   font-size: 14px;
   font-family: inherit;
@@ -429,7 +406,6 @@
 .admin-page .select {
   appearance: none;
   -webkit-appearance: none;
-  background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
   padding: 8px 32px 8px 12px;
@@ -451,7 +427,6 @@
   padding: 10px 14px;
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
-  background: var(--surface);
   color: var(--ink);
   font-size: 14px;
   font-family: inherit;
@@ -471,7 +446,6 @@
 
 /* 模态框 */
 .admin-page .modal-card {
-  background: var(--card);
   border: 1px solid var(--border);
   border-radius: var(--radius);
   box-shadow: var(--shadow-xl);
@@ -486,7 +460,6 @@
   font-weight: 700;
   font-size: 16px;
   color: var(--ink);
-  background: var(--surface);
 }
 
 .admin-page .modal-header .modal-icon {
@@ -572,7 +545,6 @@
   align-items: center;
   gap: 6px;
   padding: 4px 10px;
-  background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius-full);
   font-size: 13px;
@@ -588,7 +560,6 @@
 }
 
 .table .btn-danger {
-  background: rgba(239, 68, 68, 0.1);
   border-color: rgba(239, 68, 68, 0.2);
   color: var(--danger);
 }
@@ -602,7 +573,6 @@
 
 /* 管理员右侧 */
 .admin-right .card {
-  background: var(--card);
   border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: 24px;

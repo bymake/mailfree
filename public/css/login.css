@@ -26,7 +26,6 @@ html, body {
 
 body {
   margin: 0;
-  background: var(--bg);
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   color: var(--ink);
   -webkit-font-smoothing: antialiased;
@@ -43,7 +42,6 @@ body {
 
 .card {
   width: min(90vw, 420px);
-  background: var(--card);
   border-radius: var(--radius);
   padding: 40px 36px;
   border: 1px solid var(--border);
@@ -72,7 +70,6 @@ h1 {
   font-size: 14px;
   padding: 10px 16px;
   border-radius: var(--radius-sm);
-  background: rgba(239, 68, 68, 0.1);
   border: 1px solid rgba(239, 68, 68, 0.25);
   display: none;
 }
@@ -87,9 +84,7 @@ h1 {
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
   margin-bottom: 16px;
-  background: var(--surface);
   font-size: 15px;
-  transition: var(--transition);
   color: var(--ink);
   font-family: inherit;
 }
@@ -109,20 +104,15 @@ h1 {
   padding: 14px 24px;
   border: none;
   border-radius: var(--radius-sm);
-  background: var(--primary);
   color: var(--bg);
   cursor: pointer;
   font-weight: 700;
   font-size: 15px;
   letter-spacing: -0.01em;
-  transition: var(--transition);
   font-family: inherit;
   height: 48px;
 }
 
-.btn:hover {
-  background: var(--primary-hover);
-}
 
 .btn:active {
   opacity: 0.85;

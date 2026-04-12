@@ -6,7 +6,6 @@
 .modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.5);
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
   display: flex;
@@ -16,7 +15,6 @@
   z-index: var(--z-modal);
   opacity: 0;
   visibility: hidden;
-  transition: var(--transition);
 }
 
 .modal-overlay.show {
@@ -27,19 +25,15 @@
 /* 模态框容器 */
 .modal {
   position: relative;
-  background: var(--card);
   border-radius: var(--radius-xl);
   box-shadow: var(--shadow-xl);
   width: 100%;
   max-width: 500px;
   max-height: 90vh;
   overflow: hidden;
-  transform: scale(0.9) translateY(20px);
-  transition: var(--transition);
 }
 
 .modal-overlay.show .modal {
-  transform: scale(1) translateY(0);
 }
 
 /* 模态框尺寸 */
@@ -72,17 +66,11 @@
   height: 32px;
   font-size: 20px;
   color: var(--text-muted);
-  background: transparent;
   border: none;
   border-radius: var(--radius-sm);
   cursor: pointer;
-  transition: var(--transition-fast);
 }
 
-.modal-close:hover {
-  background: var(--border-light);
-  color: var(--text);
-}
 
 /* 模态框内容 */
 .modal-body {
@@ -147,15 +135,11 @@
   bottom: 0;
   width: 400px;
   max-width: 90vw;
-  background: var(--card);
   box-shadow: var(--shadow-xl);
-  transform: translateX(100%);
-  transition: var(--transition);
   z-index: var(--z-modal);
 }
 
 .modal-drawer.show {
-  transform: translateX(0);
 }
 
 .modal-drawer .modal-header {
@@ -213,7 +197,6 @@
   align-items: center;
   gap: var(--spacing-sm);
   padding: var(--spacing-sm) var(--spacing-md);
-  background: var(--success-light);
   border-radius: var(--radius-md);
   margin-top: var(--spacing-sm);
 }
@@ -225,11 +208,6 @@
   color: var(--success);
   cursor: pointer;
   padding: 2px 8px;
-  background: white;
   border-radius: var(--radius-sm);
 }
 
-.verification-code .code-value:hover {
-  background: var(--success);
-  color: white;
-}

@@ -27,7 +27,6 @@ body {
   font-size: 14px;
   line-height: 1.6;
   color: var(--text);
-  background: var(--surface);
   min-height: 100vh;
 }
 
@@ -53,13 +52,8 @@ p {
 a {
   color: var(--primary);
   text-decoration: none;
-  transition: var(--transition-fast);
 }
 
-a:hover {
-  color: var(--primary-hover);
-  text-decoration: underline;
-}
 
 /* Lists */
 ul, ol {
@@ -89,15 +83,12 @@ input, button, select, textarea {
 button {
   cursor: pointer;
   border: none;
-  background: none;
 }
 
 input, select, textarea {
-  background: var(--card);
   border: 1px solid var(--border);
   border-radius: var(--radius-md);
   padding: 10px 14px;
-  transition: var(--transition-fast);
 }
 
 input:focus, select:focus, textarea:focus {
@@ -117,21 +108,15 @@ input::placeholder, textarea::placeholder {
 }
 
 ::-webkit-scrollbar-track {
-  background: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--border);
   border-radius: 4px;
 }
 
-::-webkit-scrollbar-thumb:hover {
-  background: var(--text-muted);
-}
 
 /* Selection */
 ::selection {
-  background: var(--primary-light);
   color: var(--primary);
 }
 

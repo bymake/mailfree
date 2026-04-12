@@ -31,10 +31,8 @@
   font-size: 14px;
   line-height: 1.5;
   color: var(--text);
-  background: var(--card);
   border: 1px solid var(--border);
   border-radius: var(--radius-md);
-  transition: var(--transition-fast);
 }
 
 .form-input:focus,
@@ -48,7 +46,6 @@
 .form-input:disabled,
 .form-select:disabled,
 .form-textarea:disabled {
-  background: var(--border-light);
   color: var(--text-disabled);
   cursor: not-allowed;
 }
@@ -122,14 +119,11 @@
   position: relative;
   width: 44px;
   height: 24px;
-  background: var(--border);
   border-radius: var(--radius-full);
   cursor: pointer;
-  transition: var(--transition-fast);
 }
 
 .form-switch-input:checked {
-  background: var(--primary);
 }
 
 .form-switch-input::before {
@@ -139,14 +133,11 @@
   left: 2px;
   width: 20px;
   height: 20px;
-  background: white;
   border-radius: 50%;
-  transition: var(--transition-fast);
   box-shadow: var(--shadow-xs);
 }
 
 .form-switch-input:checked::before {
-  transform: translateX(20px);
 }
 
 /* 输入框组 */
@@ -168,7 +159,6 @@
   display: flex;
   align-items: center;
   padding: 0 14px;
-  background: var(--border-light);
   border: 1px solid var(--border);
   font-size: 14px;
   color: var(--text-muted);
@@ -198,7 +188,6 @@
   position: absolute;
   left: 14px;
   top: 50%;
-  transform: translateY(-50%);
   color: var(--text-muted);
   pointer-events: none;
 }
@@ -207,15 +196,12 @@
   position: absolute;
   right: 8px;
   top: 50%;
-  transform: translateY(-50%);
   padding: 4px 8px;
   font-size: 12px;
   color: var(--text-muted);
-  background: transparent;
   border: none;
   cursor: pointer;
   opacity: 0;
-  transition: var(--transition-fast);
 }
 
 .search-box .form-input:not(:placeholder-shown) + .search-box-clear {
@@ -256,7 +242,6 @@
 .form-range {
   width: 100%;
   height: 6px;
-  background: var(--border);
   border-radius: var(--radius-full);
   appearance: none;
   cursor: pointer;
@@ -266,14 +251,8 @@
   appearance: none;
   width: 18px;
   height: 18px;
-  background: var(--primary);
   border-radius: 50%;
   cursor: pointer;
   box-shadow: var(--shadow-sm);
-  transition: var(--transition-fast);
 }
 
-.form-range::-webkit-slider-thumb:hover {
-  transform: scale(1.1);
-  box-shadow: 0 0 0 4px var(--primary-light);
-}

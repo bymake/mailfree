@@ -21,7 +21,6 @@
   align-items: flex-start;
   gap: var(--spacing-sm);
   padding: var(--spacing-md);
-  background: var(--card);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-lg);
   border: 1px solid var(--border);
@@ -86,7 +85,6 @@
   padding: 4px;
   font-size: 16px;
   color: var(--text-muted);
-  background: transparent;
   border: none;
   border-radius: var(--radius-sm);
   cursor: pointer;
@@ -100,7 +98,6 @@
 }
 
 .toast-success .toast-icon {
-  background: var(--success-light);
   color: var(--success);
 }
 
@@ -109,7 +106,6 @@
 }
 
 .toast-error .toast-icon {
-  background: var(--danger-light);
   color: var(--danger);
 }
 
@@ -118,7 +114,6 @@
 }
 
 .toast-warning .toast-icon {
-  background: var(--warning-light);
   color: var(--warning);
 }
 
@@ -127,7 +122,6 @@
 }
 
 .toast-info .toast-icon {
-  background: var(--info-light);
   color: var(--info);
 }
 
@@ -137,27 +131,22 @@
 }
 
 .toast-simple.toast-success {
-  background: var(--success);
   color: white;
 }
 
 .toast-simple.toast-error {
-  background: var(--danger);
   color: white;
 }
 
 .toast-simple.toast-warning {
-  background: var(--warning);
   color: white;
 }
 
 .toast-simple.toast-info {
-  background: var(--info);
   color: white;
 }
 
 .toast-simple .toast-icon {
-  background: rgba(255, 255, 255, 0.2);
   color: white;
 }
 
@@ -177,7 +166,6 @@
   bottom: 0;
   left: 0;
   height: 3px;
-  background: currentColor;
   opacity: 0.3;
   border-radius: 0 0 var(--radius-lg) var(--radius-lg);
 }

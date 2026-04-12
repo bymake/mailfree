@@ -41,7 +41,6 @@
   width: 280px;
   height: 145px;
   padding: 14px;
-  background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius);
   box-shadow: var(--shadow);
@@ -95,7 +94,6 @@
   top: 8px;
   right: 8px;
   z-index: 5;
-  background: var(--warning);
   color: var(--bg);
   width: 22px;
   height: 22px;
@@ -112,7 +110,6 @@
   top: 8px;
   right: 8px;
   z-index: 5;
-  background: var(--warning);
   color: var(--bg);
   width: 22px;
   height: 22px;
@@ -133,7 +130,6 @@
   top: 8px;
   right: 8px;
   z-index: 5;
-  background: var(--info);
   color: white;
   width: 22px;
   height: 22px;
@@ -159,7 +155,6 @@
   opacity: 0;
   width: 76px;
   height: 76px;
-  background: var(--card);
   border-radius: var(--radius-sm);
   padding: 5px;
   box-shadow: var(--shadow-md);
@@ -173,7 +168,6 @@
   height: 32px;
   border-radius: 6px;
   border: 1px solid var(--border);
-  background: var(--surface);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -185,7 +179,6 @@
 .mailbox-card .actions .btn-icon
 
 .mailbox-card .actions .btn-icon.active {
-  background: var(--primary-light);
   border-color: var(--primary);
   color: var(--primary);
 }
@@ -222,7 +215,6 @@
   padding: 6px 12px;
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
-  background: var(--surface);
   color: var(--ink);
   font-size: 13px;
   cursor: pointer;
@@ -248,7 +240,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--surface);
   border: 1px solid var(--border);
   color: var(--text-muted);
   font-size: 16px;
@@ -259,7 +250,6 @@
 .list-actions .btn
 
 .list-actions .btn.active {
-  background: var(--primary);
   border-color: var(--primary);
   color: var(--bg);
 }
@@ -270,7 +260,6 @@
   gap: 10px;
   align-items: center;
   padding: 10px 14px;
-  background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
   margin-bottom: 12px;
@@ -280,7 +269,6 @@
   height: 34px;
   padding: 0 14px;
   font-size: 13px;
-  background: var(--surface);
   border: 1px solid var(--border);
   color: var(--ink);
   cursor: pointer;
@@ -338,7 +326,6 @@
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
   padding: 10px 14px;
-  background: var(--surface);
   cursor: pointer;
 }
 
@@ -357,7 +344,6 @@
 
 /* 邮箱卡片（管理员视图） */
 .card.mailbox {
-  background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
   padding: 14px;
