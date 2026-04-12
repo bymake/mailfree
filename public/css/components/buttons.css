@@ -16,7 +16,6 @@
   border-radius: var(--radius-sm);
   border: 1px solid var(--border);
   cursor: pointer;
-  transition: var(--transition);
   white-space: nowrap;
   user-select: none;
   background: var(--card);
@@ -37,11 +36,7 @@
   border-color: var(--primary);
 }
 
-.btn-primary:hover {
-  background: var(--primary-hover);
-  border-color: var(--primary-hover);
-  color: var(--bg);
-}
+.btn-primary
 
 /* 次要按钮 */
 .btn-secondary {
@@ -50,11 +45,7 @@
   border-color: var(--border);
 }
 
-.btn-secondary:hover {
-  border-color: var(--primary);
-  color: var(--primary);
-  background: var(--primary-light);
-}
+.btn-secondary
 
 /* 轮廓按钮 */
 .btn-outline {
@@ -63,9 +54,7 @@
   border-color: var(--primary);
 }
 
-.btn-outline:hover {
-  background: var(--primary-light);
-}
+.btn-outline
 
 /* 幽灵按钮 */
 .btn-ghost {
@@ -74,11 +63,7 @@
   border-color: transparent;
 }
 
-.btn-ghost:hover {
-  background: var(--primary-light);
-  color: var(--primary);
-  border-color: var(--primary);
-}
+.btn-ghost
 
 /* 危险按钮 */
 .btn-danger {
@@ -87,10 +72,7 @@
   border-color: var(--danger);
 }
 
-.btn-danger:hover {
-  background: var(--danger-hover);
-  border-color: var(--danger-hover);
-}
+.btn-danger
 
 /* 成功按钮 */
 .btn-success {
@@ -99,10 +81,7 @@
   border-color: var(--primary);
 }
 
-.btn-success:hover {
-  background: var(--primary-hover);
-  border-color: var(--primary-hover);
-}
+.btn-success
 
 /* 按钮尺寸 */
 .btn-sm {
@@ -187,7 +166,6 @@
   border: 2px solid currentColor;
   border-top-color: transparent;
   border-radius: 50%;
-  animation: spin 0.6s linear infinite;
 }
 
 @keyframes spin {
@@ -202,5 +180,4 @@
   border: 2px solid currentColor;
   border-top-color: transparent;
   border-radius: 50%;
-  animation: spin 0.6s linear infinite;
 }

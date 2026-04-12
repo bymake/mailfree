@@ -26,32 +26,26 @@
   box-shadow: var(--shadow-lg);
   border: 1px solid var(--border);
   pointer-events: auto;
-  animation: toast-in 0.3s ease;
 }
 
 .toast.hiding {
-  animation: toast-out 0.3s ease forwards;
 }
 
 @keyframes toast-in {
   from {
     opacity: 0;
-    transform: translateX(100%);
   }
   to {
     opacity: 1;
-    transform: translateX(0);
   }
 }
 
 @keyframes toast-out {
   from {
     opacity: 1;
-    transform: translateX(0);
   }
   to {
     opacity: 0;
-    transform: translateX(100%);
   }
 }
 
@@ -96,13 +90,9 @@
   border: none;
   border-radius: var(--radius-sm);
   cursor: pointer;
-  transition: var(--transition-fast);
 }
 
-.toast-close:hover {
-  background: var(--border-light);
-  color: var(--text);
-}
+.toast-close
 
 /* Toast 类型 */
 .toast-success {
@@ -179,10 +169,7 @@
   color: rgba(255, 255, 255, 0.7);
 }
 
-.toast-simple .toast-close:hover {
-  background: rgba(255, 255, 255, 0.2);
-  color: white;
-}
+.toast-simple .toast-close
 
 /* Toast 进度条 */
 .toast-progress {
@@ -193,7 +180,6 @@
   background: currentColor;
   opacity: 0.3;
   border-radius: 0 0 var(--radius-lg) var(--radius-lg);
-  animation: toast-progress 3s linear forwards;
 }
 
 @keyframes toast-progress {

@@ -9,12 +9,9 @@
   border: 1px solid var(--border);
   box-shadow: var(--shadow);
   padding: var(--spacing-lg);
-  transition: var(--transition);
 }
 
-.card:hover {
-  border-color: var(--border-accent);
-}
+.card
 
 /* 毛玻璃卡片 */
 .card-glass {
@@ -24,9 +21,7 @@
   border: 1px solid var(--border);
 }
 
-.card-glass:hover {
-  border-color: var(--border-accent);
-}
+.card-glass
 
 /* 卡片头部 */
 .card-header {
@@ -72,9 +67,7 @@
   cursor: pointer;
 }
 
-.card-clickable:hover {
-  border-color: var(--primary);
-}
+.card-clickable
 
 .card-clickable:active {
   opacity: 0.85;
@@ -106,13 +99,10 @@
   border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: var(--spacing-md);
-  transition: var(--transition);
   position: relative;
 }
 
-.mailbox-card:hover {
-  border-color: var(--primary);
-}
+.mailbox-card
 
 .mailbox-card.pinned {
   border-color: var(--warning);
@@ -132,12 +122,9 @@
   border: 1px solid var(--border);
   padding: var(--spacing-md);
   cursor: pointer;
-  transition: var(--transition);
 }
 
-.email-card:hover {
-  border-color: var(--primary);
-}
+.email-card
 
 .email-card.unread {
   background: var(--primary-light);

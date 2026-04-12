@@ -41,12 +41,9 @@
   padding: 24px;
   position: relative;
   overflow: hidden;
-  transition: var(--transition);
 }
 
-.admin-page .card:hover {
-  border-color: var(--border-accent);
-}
+.admin-page .card
 
 .admin-page .card h2 {
   display: flex;
@@ -99,7 +96,6 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
-  transition: var(--transition);
   cursor: pointer;
   background: var(--surface);
   border: 1px solid var(--border);
@@ -113,10 +109,7 @@
   color: var(--bg);
 }
 
-.generate-action .btn-primary:hover {
-  background: var(--primary-hover);
-  border-color: var(--primary-hover);
-}
+.generate-action .btn-primary
 
 .generate-action .btn-secondary {
   background: var(--surface);
@@ -124,11 +117,7 @@
   color: var(--ink);
 }
 
-.generate-action .btn-secondary:hover {
-  border-color: var(--primary);
-  color: var(--primary);
-  background: var(--primary-light);
-}
+.generate-action .btn-secondary
 
 /* 用户邮箱列表 */
 .user-mailboxes {
@@ -167,16 +156,13 @@
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
-  transition: var(--transition);
 }
 
 .mailbox-item.clickable {
   cursor: pointer;
 }
 
-.mailbox-item:hover {
-  border-color: var(--primary);
-}
+.mailbox-item
 
 .mailbox-item .address {
   color: var(--ink);
@@ -193,16 +179,12 @@
   border: 1px solid rgba(239, 68, 68, 0.2);
   border-radius: var(--radius-xs);
   cursor: pointer;
-  transition: var(--transition);
   height: 28px;
   font-weight: 600;
   font-family: inherit;
 }
 
-.mailbox-item .btn.danger:hover {
-  background: var(--danger);
-  color: white;
-}
+.mailbox-item .btn.danger
 
 .mailbox-list .empty {
   text-align: center;
@@ -219,12 +201,9 @@
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
-  transition: var(--transition);
 }
 
-.user-mailbox-item:hover {
-  border-color: var(--primary);
-}
+.user-mailbox-item
 
 .mailbox-content {
   display: flex;
@@ -264,7 +243,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: var(--transition);
   cursor: pointer;
   background: var(--surface);
   border: 1px solid var(--border);
@@ -272,11 +250,7 @@
   font-family: inherit;
 }
 
-.mailbox-actions .btn:hover {
-  border-color: var(--primary);
-  color: var(--primary);
-  background: var(--primary-light);
-}
+.mailbox-actions .btn
 
 .mailbox-actions .btn-danger {
   background: rgba(239, 68, 68, 0.1);
@@ -284,10 +258,7 @@
   color: var(--danger);
 }
 
-.mailbox-actions .btn-danger:hover {
-  background: var(--danger);
-  color: white;
-}
+.mailbox-actions .btn-danger
 
 /* 表格区域 */
 .admin-left .table-container {
@@ -331,24 +302,19 @@
 
 .admin-left .table tbody tr {
   border-bottom: 1px solid var(--border-light);
-  transition: var(--transition);
 }
 
 .admin-left .table tbody tr:last-child {
   border-bottom: none;
 }
 
-.admin-left .table tbody tr:hover {
-  background: var(--surface);
-}
+.admin-left .table tbody tr
 
 .admin-left .table tbody tr.clickable {
   cursor: pointer;
 }
 
-.admin-left .table tbody tr.clickable:hover {
-  background: var(--primary-light);
-}
+.admin-left .table tbody tr.clickable
 
 .admin-left .table tbody tr.active {
   background: var(--primary-light);
@@ -424,7 +390,6 @@
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
-  transition: var(--transition);
   display: inline-flex;
   align-items: center;
   gap: 6px;
@@ -432,11 +397,7 @@
   height: 38px;
 }
 
-.admin-page .btn:hover {
-  border-color: var(--primary);
-  color: var(--primary);
-  background: var(--primary-light);
-}
+.admin-page .btn
 
 .admin-page .btn.card {
   padding: 12px 16px;
@@ -452,7 +413,6 @@
   background: var(--surface);
   color: var(--ink);
   font-size: 14px;
-  transition: var(--transition);
   font-family: inherit;
 }
 
@@ -476,7 +436,6 @@
   color: var(--ink);
   font-size: 14px;
   cursor: pointer;
-  transition: var(--transition);
   font-family: inherit;
   height: 38px;
 }
@@ -495,7 +454,6 @@
   background: var(--surface);
   color: var(--ink);
   font-size: 14px;
-  transition: var(--transition);
   font-family: inherit;
   resize: vertical;
   min-height: 80px;
@@ -635,10 +593,7 @@
   color: var(--danger);
 }
 
-.table .btn-danger:hover {
-  background: var(--danger);
-  color: white;
-}
+.table .btn-danger
 
 /* 模态框内角色权限列 */
 .col-actions {
