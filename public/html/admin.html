@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>用户管理 - iDing's临时邮箱</title>
+  <title>用户管理 - 邮箱</title>
   <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate" />
   <meta http-equiv="Pragma" content="no-cache" />
   <meta http-equiv="Expires" content="0" />
@@ -16,10 +16,10 @@
   <script src="https://unpkg.com/layui/dist/layui.js"></script>
   <style>
     body { margin: 0; background: #f0f2f5; }
-    .header { background: #001529; color: #fff; padding: 0 20px; height: 60px; line-height: 60px; }
+    .header { background: #001529; color: #fff; padding: 0 20px; height: 60px; line-height: 60px; display: flex; align-items: center; }
     .header .logo { font-size: 20px; font-weight: bold; }
-    .header .nav { float: right; }
-    .header .nav button { background: none; border: none; color: #fff; margin-left: 20px; cursor: pointer; }
+    .header .nav { margin-left: auto; display: flex; gap: 20px; }
+    .header .nav button { background: none; border: none; color: #fff; cursor: pointer; font-size: 14px; }
     .main-container { padding: 20px; max-width: 1600px; margin: 0 auto; }
     .card { background: #fff; border-radius: 4px; padding: 20px; margin-bottom: 20px; }
     .card h2 { margin: 0 0 15px 0; font-size: 18px; border-bottom: 1px solid #eee; padding-bottom: 10px; }
@@ -28,6 +28,25 @@
     .mailbox-card { flex: 0 0 400px; }
     .empty-state { text-align: center; padding: 60px 0; color: #999; }
     .split-layout { display: flex; gap: 20px; }
+    /* 分页器 */
+    .pager { display: flex; justify-content: center; align-items: center; gap: 15px; padding: 15px 0; }
+    /* 弹窗 */
+    .modal-overlay { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center; }
+    .modal-overlay.show { display: flex; }
+    .modal-content { background: #fff; border-radius: 8px; width: 480px; max-width: 90%; max-height: 90vh; overflow: auto; }
+    .modal-header { padding: 15px 20px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; }
+    .modal-body { padding: 20px; }
+    .modal-footer { padding: 15px 20px; border-top: 1px solid #eee; display: flex; gap: 10px; justify-content: flex-end; }
+    .close-btn { background: none; border: none; font-size: 20px; cursor: pointer; }
+    /* 表格样式 */
+    .user-table { width: 100%; border-collapse: collapse; }
+    .user-table th, .user-table td { padding: 12px 8px; text-align: left; border-bottom: 1px solid #eee; }
+    .user-table th { background: #fafafa; font-weight: 500; }
+    .user-table tr:hover { background: #f5f5f5; }
+    .user-table .actions { display: flex; gap: 8px; }
+    /* 邮箱列表 */
+    .mailbox-list-item { padding: 10px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; }
+    .mailbox-list-item:hover { background: #f5f5f5; }
   </style>
   <script src="/js/auth-guard.js" defer></script>
   <script>
@@ -50,14 +69,14 @@
 </head>
 <body>
   <div class="header">
-    <span class="logo">🚀 iDing's临时邮箱 - 用户管理</span>
+    <span class="logo">🚀 邮箱 - 用户管理</span>
     <div class="nav">
       <button id="back">📧 返回邮箱</button>
       <button id="logout">👋 退出登录</button>
     </div>
   </div>
 
-  <div id="demo-banner" class="layui-alert layui-alert-warning" style="display: none; margin: 0; border-radius: 0; text-align: center;">
+  <div id="demo-banner" style="display: none; padding: 10px; background: #fff3cd; text-align: center; color: #856404;">
     当前为演示管理页：所有改动仅在浏览器会话中模拟
   </div>
 
@@ -67,7 +86,7 @@
       <div class="user-card">
         <div class="card">
           <h2>👤 用户管理</h2>
-          <div class="layui-form" style="margin-bottom: 15px;">
+          <div style="margin-bottom: 15px;">
             <button id="u-open" class="layui-btn layui-btn-normal">➕ 创建用户</button>
             <button id="unassign-open" class="layui-btn">📭 取消分配</button>
             <button id="a-open" class="layui-btn layui-btn-normal">📬 分配邮箱</button>
@@ -82,8 +101,23 @@
           <div id="users-loading" style="text-align: center; padding: 20px; color: #999;">
             <i class="layui-icon layui-icon-loading layui-anim layui-anim-rotate layui-anim-loop"></i> 加载中...
           </div>
-          <table id="users-table" lay-filter="users-table"></table>
-          <div id="users-pagination" style="text-align: center; padding: 15px; display: none;">
+          <div id="users-table-container">
+            <table class="user-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>用户名</th>
+                  <th>角色</th>
+                  <th>邮箱数</th>
+                  <th>发件</th>
+                  <th>创建时间</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody id="users-tbody"></tbody>
+            </table>
+          </div>
+          <div id="users-pagination" class="pager" style="display: none;">
             <button id="prev-page" class="layui-btn layui-btn-sm layui-btn-primary">上一页</button>
             <span id="page-info" style="padding: 0 15px;"></span>
             <button id="next-page" class="layui-btn layui-btn-sm layui-btn-primary">下一页</button>
@@ -107,7 +141,7 @@
               <div>点击左侧用户查看其邮箱</div>
             </div>
           </div>
-          <div id="mailboxes-pagination" style="text-align: center; padding: 15px; display: none;">
+          <div id="mailboxes-pagination" class="pager" style="display: none;">
             <button id="mailboxes-prev-page" class="layui-btn layui-btn-sm layui-btn-primary">上一页</button>
             <span id="mailboxes-page-info" style="padding: 0 15px;"></span>
             <button id="mailboxes-next-page" class="layui-btn layui-btn-sm layui-btn-primary">下一页</button>
@@ -121,138 +155,176 @@
   <div id="footer-slot"></div>
 
   <!-- 编辑用户弹窗 -->
-  <div id="edit-modal" style="display: none; padding: 20px;">
-    <form class="layui-form" lay-filter="edit-form">
-      <div class="layui-form-item">
-        <label class="layui-form-label">新密码</label>
-        <div class="layui-input-block">
-          <input type="password" id="edit-pass" name="pass" placeholder="留空则不修改" class="layui-input" />
-        </div>
+  <div id="edit-modal" class="modal-overlay">
+    <div class="modal-content">
+      <div class="modal-header">
+        <span>✏️ 编辑用户</span>
+        <button id="edit-close" class="close-btn">✕</button>
       </div>
-      <div class="layui-form-item">
-        <label class="layui-form-label">新用户名</label>
-        <div class="layui-input-block">
-          <input type="text" id="edit-new-name" name="newName" placeholder="留空则不修改" class="layui-input" />
-        </div>
+      <div class="modal-body">
+        <form id="edit-form" class="layui-form">
+          <div class="layui-form-item">
+            <label class="layui-form-label">新密码</label>
+            <div class="layui-input-block">
+              <input type="password" id="edit-pass" name="pass" placeholder="留空则不修改" class="layui-input" style="width: 100%;" />
+            </div>
+          </div>
+          <div class="layui-form-item">
+            <label class="layui-form-label">新用户名</label>
+            <div class="layui-input-block">
+              <input type="text" id="edit-new-name" name="newName" placeholder="留空则不修改" class="layui-input" style="width: 100%;" />
+            </div>
+          </div>
+          <div class="layui-form-item">
+            <label class="layui-form-label">邮箱上限</label>
+            <div class="layui-input-block">
+              <input type="number" id="edit-limit" name="limit" min="0" class="layui-input" style="width: 100%;" />
+            </div>
+          </div>
+          <div class="layui-form-item">
+            <label class="layui-form-label">权限</label>
+            <div class="layui-input-block">
+              <input type="checkbox" id="edit-role-check" title="高级用户" lay-skin="primary" />
+              <input type="checkbox" id="edit-send-check" title="允许发件" lay-skin="primary" />
+            </div>
+          </div>
+        </form>
       </div>
-      <div class="layui-form-item">
-        <label class="layui-form-label">邮箱上限</label>
-        <div class="layui-input-block">
-          <input type="number" id="edit-limit" name="limit" min="0" class="layui-input" />
-        </div>
+      <div class="modal-footer">
+        <button id="edit-cancel" class="layui-btn layui-btn-primary">取消</button>
+        <button id="edit-save" class="layui-btn layui-btn-normal">保存</button>
+        <button id="edit-delete" class="layui-btn layui-btn-danger" style="margin-left: auto;">删除用户</button>
       </div>
-      <div class="layui-form-item">
-        <label class="layui-form-label">权限</label>
-        <div class="layui-input-block">
-          <input type="checkbox" id="edit-role-check" title="高级用户" lay-skin="primary" />
-          <input type="checkbox" id="edit-send-check" title="允许发件" lay-skin="primary" />
-        </div>
-      </div>
-      <div class="layui-form-item">
-        <div class="layui-input-block">
-          <button lay-submit lay-filter="edit-save" class="layui-btn layui-btn-normal">保存</button>
-          <button type="button" id="edit-cancel" class="layui-btn layui-btn-primary">取消</button>
-          <button type="button" id="edit-delete" class="layui-btn layui-btn-danger" style="float: right;">删除用户</button>
-        </div>
-      </div>
-    </form>
+    </div>
   </div>
 
   <!-- 确认对话框 -->
-  <div id="admin-confirm-modal" style="display: none; padding: 20px; text-align: center;">
-    <div id="admin-confirm-message" style="margin-bottom: 20px; font-size: 16px;"></div>
-    <div>
-      <button id="admin-confirm-cancel" class="layui-btn layui-btn-primary">取消</button>
-      <button id="admin-confirm-ok" class="layui-btn layui-btn-danger">确定</button>
+  <div id="admin-confirm-modal" class="modal-overlay">
+    <div class="modal-content">
+      <div class="modal-header">
+        <span>🔔 确认操作</span>
+        <button id="admin-confirm-close" class="close-btn">✕</button>
+      </div>
+      <div class="modal-body" style="text-align: center;">
+        <div id="admin-confirm-message" style="margin-bottom: 20px; font-size: 16px;"></div>
+      </div>
+      <div class="modal-footer">
+        <button id="admin-confirm-cancel" class="layui-btn layui-btn-primary">取消</button>
+        <button id="admin-confirm-ok" class="layui-btn layui-btn-danger">确定</button>
+      </div>
     </div>
   </div>
 
   <!-- 创建用户弹窗 -->
-  <div id="u-modal" style="display: none; padding: 20px;">
-    <form class="layui-form" lay-filter="u-form">
-      <div class="layui-form-item">
-        <label class="layui-form-label">用户名</label>
-        <div class="layui-input-block">
-          <input type="text" id="u-name" name="name" lay-verify="required" placeholder="username" class="layui-input" />
-        </div>
+  <div id="u-modal" class="modal-overlay">
+    <div class="modal-content">
+      <div class="modal-header">
+        <span>👤 创建用户</span>
+        <button id="u-close" class="close-btn">✕</button>
       </div>
-      <div class="layui-form-item">
-        <label class="layui-form-label">密码</label>
-        <div class="layui-input-block">
-          <input type="password" id="u-pass" name="pass" lay-verify="required" placeholder="password" class="layui-input" />
-        </div>
+      <div class="modal-body">
+        <form id="u-form" class="layui-form">
+          <div class="layui-form-item">
+            <label class="layui-form-label">用户名</label>
+            <div class="layui-input-block">
+              <input type="text" id="u-name" name="name" lay-verify="required" placeholder="username" class="layui-input" style="width: 100%;" />
+            </div>
+          </div>
+          <div class="layui-form-item">
+            <label class="layui-form-label">密码</label>
+            <div class="layui-input-block">
+              <input type="password" id="u-pass" name="pass" lay-verify="required" placeholder="password" class="layui-input" style="width: 100%;" />
+            </div>
+          </div>
+          <div class="layui-form-item">
+            <label class="layui-form-label">角色</label>
+            <div class="layui-input-block">
+              <select id="u-role" name="role" class="layui-input" style="width: 100%;">
+                <option value="user">普通用户</option>
+                <option value="admin">高级用户</option>
+              </select>
+            </div>
+          </div>
+        </form>
       </div>
-      <div class="layui-form-item">
-        <label class="layui-form-label">角色</label>
-        <div class="layui-input-block">
-          <select id="u-role" name="role" class="layui-input">
-            <option value="user">普通用户</option>
-            <option value="admin">高级用户</option>
-          </select>
-        </div>
+      <div class="modal-footer">
+        <button id="u-cancel" class="layui-btn layui-btn-primary">取消</button>
+        <button id="u-create" class="layui-btn layui-btn-normal">创建</button>
       </div>
-      <div class="layui-form-item">
-        <div class="layui-input-block">
-          <button lay-submit lay-filter="u-create" class="layui-btn layui-btn-normal">创建</button>
-          <button type="button" id="u-cancel" class="layui-btn layui-btn-primary">取消</button>
-        </div>
-      </div>
-    </form>
+    </div>
   </div>
 
   <!-- 分配邮箱弹窗 -->
-  <div id="a-modal" style="display: none; padding: 20px;">
-    <form class="layui-form" lay-filter="a-form">
-      <div class="layui-form-item">
-        <label class="layui-form-label">用户名</label>
-        <div class="layui-input-block">
-          <input type="text" id="a-name" name="name" lay-verify="required" placeholder="username" class="layui-input" />
-        </div>
+  <div id="a-modal" class="modal-overlay">
+    <div class="modal-content">
+      <div class="modal-header">
+        <span>📬 分配邮箱</span>
+        <button id="a-close" class="close-btn">✕</button>
       </div>
-      <div class="layui-form-item">
-        <label class="layui-form-label">邮箱地址</label>
-        <div class="layui-input-block">
-          <textarea id="a-mail" name="mail" lay-verify="required" placeholder="foo@example.com&#10;bar@example.com&#10;baz@example.com" rows="4" class="layui-textarea" style="font-family: monospace;"></textarea>
-          <div class="layui-form-mid" style="color: #999;">每行一个邮箱地址，支持批量分配</div>
-        </div>
+      <div class="modal-body">
+        <form id="a-form" class="layui-form">
+          <div class="layui-form-item">
+            <label class="layui-form-label">用户名</label>
+            <div class="layui-input-block">
+              <input type="text" id="a-name" name="name" lay-verify="required" placeholder="username" class="layui-input" style="width: 100%;" />
+            </div>
+          </div>
+          <div class="layui-form-item">
+            <label class="layui-form-label">邮箱地址</label>
+            <div class="layui-input-block">
+              <textarea id="a-mail" name="mail" lay-verify="required" placeholder="foo@example.com&#10;bar@example.com&#10;baz@example.com" rows="4" class="layui-textarea" style="font-family: monospace; width: 100%;"></textarea>
+              <div style="color: #999; font-size: 12px; margin-top: 5px;">每行一个邮箱地址，支持批量分配</div>
+            </div>
+          </div>
+        </form>
       </div>
-      <div class="layui-form-item">
-        <div class="layui-input-block">
-          <button lay-submit lay-filter="a-assign" class="layui-btn layui-btn-normal">分配</button>
-          <button type="button" id="a-cancel" class="layui-btn layui-btn-primary">取消</button>
-        </div>
+      <div class="modal-footer">
+        <button id="a-cancel" class="layui-btn layui-btn-primary">取消</button>
+        <button id="a-assign" class="layui-btn layui-btn-normal">分配</button>
       </div>
-    </form>
+    </div>
   </div>
 
   <!-- 取消分配弹窗 -->
-  <div id="unassign-modal" style="display: none; padding: 20px;">
-    <form class="layui-form" lay-filter="unassign-form">
-      <div class="layui-form-item">
-        <label class="layui-form-label">用户名</label>
-        <div class="layui-input-block">
-          <input type="text" id="unassign-name" name="name" lay-verify="required" placeholder="username" class="layui-input" />
-        </div>
+  <div id="unassign-modal" class="modal-overlay">
+    <div class="modal-content">
+      <div class="modal-header">
+        <span>📭 取消分配邮箱</span>
+        <button id="unassign-close" class="close-btn">✕</button>
       </div>
-      <div class="layui-form-item">
-        <label class="layui-form-label">邮箱地址</label>
-        <div class="layui-input-block">
-          <textarea id="unassign-mail" name="mail" lay-verify="required" placeholder="foo@example.com&#10;bar@example.com&#10;baz@example.com" rows="4" class="layui-textarea" style="font-family: monospace;"></textarea>
-          <div class="layui-form-mid" style="color: #999;">每行一个邮箱地址，支持批量取消分配</div>
-        </div>
+      <div class="modal-body">
+        <form id="unassign-form" class="layui-form">
+          <div class="layui-form-item">
+            <label class="layui-form-label">用户名</label>
+            <div class="layui-input-block">
+              <input type="text" id="unassign-name" name="name" lay-verify="required" placeholder="username" class="layui-input" style="width: 100%;" />
+            </div>
+          </div>
+          <div class="layui-form-item">
+            <label class="layui-form-label">邮箱地址</label>
+            <div class="layui-input-block">
+              <textarea id="unassign-mail" name="mail" lay-verify="required" placeholder="foo@example.com&#10;bar@example.com&#10;baz@example.com" rows="4" class="layui-textarea" style="font-family: monospace; width: 100%;"></textarea>
+              <div style="color: #999; font-size: 12px; margin-top: 5px;">每行一个邮箱地址，支持批量取消分配</div>
+            </div>
+          </div>
+        </form>
       </div>
-      <div class="layui-form-item">
-        <div class="layui-input-block">
-          <button lay-submit lay-filter="unassign-submit" class="layui-btn layui-btn-danger">取消分配</button>
-          <button type="button" id="unassign-cancel" class="layui-btn layui-btn-primary">取消</button>
-        </div>
+      <div class="modal-footer">
+        <button id="unassign-cancel" class="layui-btn layui-btn-primary">取消</button>
+        <button id="unassign-submit" class="layui-btn layui-btn-danger">取消分配</button>
       </div>
-    </form>
+    </div>
   </div>
 
   <script src="/js/toast-utils.js"></script>
   <script type="module" src="/js/admin.js"></script>
   <script>
+    // 初始化 Layui form 模块
+    layui.use('form', function(){
+      var form = layui.form;
+    });
+
+    // 动态加载 footer
     (async function(){
       try{
         const res = await fetch('/templates/footer.html', { cache: 'no-cache' });

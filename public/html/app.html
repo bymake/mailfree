@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>临时邮箱 - iDing's临时邮箱</title>
+  <title>临时邮箱 - 邮箱</title>
   <link rel="stylesheet" href="https://unpkg.com/layui/dist/css/layui.css" />
   <script src="https://unpkg.com/layui/dist/layui.js"></script>
   <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
@@ -29,6 +29,7 @@
     .section-header { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; font-weight: 500; }
     .email-display { font-size: 20px; color: #1890ff; margin: 10px 0; word-break: break-all; min-height: 30px; }
     .mailbox-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 15px; }
+    .mailbox-actions .btn { flex: 0 0 calc(50% - 4px); min-width: 0; box-sizing: border-box; }
     .config-form { }
     .config-item { margin-bottom: 15px; }
     .config-label { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; font-weight: 500; }
@@ -124,7 +125,7 @@
 </head>
 <body>
   <div class="topbar">
-    <div class="brand">📧 iDing's临时邮箱</div>
+    <div class="brand">📧 邮箱</div>
     <div class="nav">
       <a id="all-mailboxes" href="/html/mailboxes.html" style="display:none">📦 所有邮箱</a>
       <a id="admin" href="/html/admin.html" style="display:none">🛠️ 用户管理</a>
