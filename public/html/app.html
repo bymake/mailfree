@@ -1,255 +1,214 @@
-<div class="topbar">
-  <div class="brand">
-    <span class="brand-icon">📧</span>
-    <span class="brand-text">iDing's临时邮箱</span>
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>临时邮箱 - iDing's临时邮箱</title>
+  <link rel="stylesheet" href="https://unpkg.com/layui/dist/css/layui.css" />
+  <script src="https://unpkg.com/layui/dist/layui.js"></script>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="shortcut icon" href="/favicon.svg" type="image/svg+xml" />
+  <style>
+    body { margin: 0; background: #f0f2f5; }
+    .header { background: #001529; color: #fff; padding: 0 20px; height: 60px; line-height: 60px; }
+    .header .logo { font-size: 20px; font-weight: bold; }
+    .header .nav { float: right; }
+    .header .nav a { color: #fff; margin-left: 20px; text-decoration: none; }
+    .main-container { padding: 20px; }
+    .mailbox-panel { background: #fff; border-radius: 4px; padding: 20px; margin-bottom: 20px; }
+    .mailbox-panel h2 { margin: 0 0 15px 0; font-size: 18px; border-bottom: 1px solid #eee; padding-bottom: 10px; }
+    .mailbox-display { font-size: 24px; color: #1890ff; margin: 15px 0; word-break: break-all; }
+    .mailbox-info { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+    .action-buttons { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 15px; }
+    .config-section { background: #fff; border-radius: 4px; padding: 20px; margin-bottom: 20px; }
+    .config-section h3 { margin: 0 0 15px 0; font-size: 16px; }
+    .inbox-card { background: #fff; border-radius: 4px; padding: 20px; }
+    .email-list .email-item { padding: 15px; border-bottom: 1px solid #f0f0f0; cursor: pointer; transition: background 0.2s; }
+    .email-list .email-item:hover { background: #f5f5f5; }
+    .email-item .subject { font-weight: 500; color: #333; margin-bottom: 5px; }
+    .email-item .meta { font-size: 12px; color: #999; }
+    .empty-state { text-align: center; padding: 60px 0; color: #999; }
+    .empty-state .icon { font-size: 48px; margin-bottom: 15px; }
+  </style>
+  <script src="/js/auth-guard.js"></script>
+  <script src="/js/mock.js"></script>
+  <script src="/js/toast-utils.js"></script>
+</head>
+<body>
+  <div class="header">
+    <span class="logo">📧 iDing's临时邮箱</span>
+    <div class="nav">
+      <a id="repo" href="https://github.com/idinging/freemail" target="_blank">GitHub</a>
+      <a id="logout" href="javascript:void(0)">退出登录</a>
+    </div>
   </div>
-  <div id="role-badge" class="role-badge" title="欢迎用户："></div>
-  <div class="nav-actions">
-    <a id="repo" class="btn btn-ghost" href="https://github.com/idinging/freemail" target="_blank" rel="noopener noreferrer" title="GitHub 开源仓库">
-      <span class="btn-icon">🔗</span>
-      <span class="btn-text">GitHub</span>
-    </a>
-    <a id="admin" class="btn btn-ghost" href="/templates/loading.html?redirect=%2Fadmin.html&status=%E6%AD%A3%E5%9C%A8%E6%A0%A1%E9%AA%8C%E6%9D%83%E9%99%90%E2%80%A6" title="用户管理" style="display:none">
-      <span class="btn-icon">🛠️</span>
-      <span class="btn-text">用户管理</span>
-    </a>
-    <a id="all-mailboxes" class="btn btn-ghost" href="/templates/loading.html?redirect=%2Fhtml%2Fmailboxes.html&status=%E6%AD%A3%E5%9C%A8%E6%89%93%E5%BC%80%E9%82%AE%E7%AE%B1%E6%80%BB%E8%A7%88%E9%A1%B5%E9%9D%A2%E2%80%A6" title="所有邮箱" style="display:none">
-      <span class="btn-icon">📦</span>
-      <span class="btn-text">所有邮箱</span>
-    </a>
-    <button id="logout" class="btn btn-secondary" title="退出登录">
-      <span class="btn-icon">🚪</span>
-      <span class="btn-text">退出登录</span>
-    </button>
-  </div>
-  </div>
-  <div class="toast" id="toast"></div>
-  <div class="container">
-    <div class="sidebar">
-      <div class="sidebar-header">
-        <h3>
-          <span class="sidebar-icon">📨</span>
-          <span class="sidebar-title">历史邮箱</span>
-        </h3>
-        <div class="sidebar-header-actions">
-          <span id="quota" class="quota-display"></span>
-          <button id="sidebar-toggle" class="sidebar-toggle-btn" title="收起侧板">
-            <span id="sidebar-toggle-icon">◀</span>
-          </button>
-          <button id="mb-toggle" class="sidebar-toggle-btn" title="展开/收起历史邮箱">
-            <span id="mb-toggle-icon">▾</span>
-          </button>
+
+  <div class="main-container">
+    <!-- 邮箱生成面板 -->
+    <div class="mailbox-panel">
+      <h2>📬 生成临时邮箱</h2>
+      <div class="layui-form" lay-filter="mailbox-form">
+        <div class="layui-form-item">
+          <label class="layui-form-label" style="width: 100px;">邮箱后缀</label>
+          <div class="layui-input-inline" style="width: 200px;">
+            <select name="domain" id="domain-select" class="layui-input">
+              <option value="">选择域名</option>
+            </select>
+          </div>
+          <div class="layui-input-inline" style="width: 150px;">
+            <input type="number" name="length" id="len-range" min="8" max="30" value="8" class="layui-input" placeholder="长度" />
+          </div>
+          <div class="layui-input-inline">
+            <button type="button" id="gen" class="layui-btn layui-btn-normal">随机生成</button>
+            <button type="button" id="gen-name" class="layui-btn">随机人名</button>
+          </div>
         </div>
       </div>
-      <div class="sidebar-search">
-        <input id="mb-search" class="input sidebar-search-input" placeholder="搜索历史邮箱" />
+      <div class="mailbox-display" id="email-text">
+        <span style="color: #999; font-size: 16px;">点击生成按钮创建邮箱地址</span>
       </div>
-      <div id="mb-list"></div>
-      <div id="mb-loading" style="margin-top:12px"></div>
-      <div id="mb-pager" class="pager" style="display:none;margin-top:16px">
-        <button id="mb-prev" class="btn btn-ghost btn-sm">上一页</button>
-        <span id="mb-page-info" class="muted" style="min-width:100px;text-align:center"></span>
-        <button id="mb-next" class="btn btn-ghost btn-sm">下一页</button>
+      <div class="action-buttons" id="email-actions" style="display: none;">
+        <button id="copy" class="layui-btn layui-btn-primary">📋 复制邮箱</button>
+        <button id="compose" class="layui-btn layui-btn-normal">✉️ 发邮件</button>
+        <button id="clear" class="layui-btn layui-btn-danger">🗑️ 清空邮件</button>
+        <button id="refresh" class="layui-btn">🔄 刷新邮件</button>
+        <button id="forward-setting" class="layui-btn layui-btn-primary">↪️ 转发设置</button>
+        <button id="toggle-favorite" class="layui-btn layui-btn-primary">☆ 收藏邮箱</button>
       </div>
     </div>
-    <div class="main">
-      <div class="card generate-card">
-        <h2>
-          <span class="card-icon">✨</span>
-          生成临时邮箱
-        </h2>
-        
-        <div class="mailbox-layout">
-          <!-- 左侧：邮箱地址展示 -->
-          <div class="mailbox-display-section">
-            <div class="mailbox-display-content">
-              <div class="section-header">
-                <span class="section-icon">📧</span>
-                <span class="section-title">当前邮箱</span>
-              </div>
-              <div id="email" class="email-display">
-                <span id="email-text" class="email-text"><span class="placeholder-text">点击右侧生成按钮创建邮箱地址</span></span>
-                <div id="custom-overlay" class="custom-overlay" style="display:none">
-                  <input id="custom-local-overlay" class="input custom-input" type="text" placeholder="仅限字母/数字/._-" />
-                  <button id="create-custom-overlay" class="btn btn-primary btn-sm">创建</button>
-                </div>
-              </div>
-            </div>
-            <div class="mailbox-actions" id="email-actions" style="display:none">
-              <button id="copy" class="btn btn-secondary" style="width:100%">
-                <span class="btn-icon">📋</span>
-                <span>复制邮箱 ✨</span>
-              </button>
-              <button id="compose" class="btn btn-primary" style="width:100%">
-                <span class="btn-icon">✉️</span>
-                <span>发邮件</span>
-              </button>
-              <button id="clear" class="btn btn-danger" style="width:100%">
-                <span class="btn-icon">🗑️</span>
-                <span>清空邮件 💥</span>
-              </button>
-              <button id="refresh" class="btn btn-ghost" style="width:100%">
-                <span class="btn-icon">🔄</span>
-                <span>刷新邮件 📬</span>
-              </button>
-              <button id="forward-setting" class="btn btn-ghost" style="width:100%">
-                <span class="btn-icon">↪️</span>
-                <span>转发设置</span>
-              </button>
-              <button id="toggle-favorite" class="btn btn-ghost" style="width:100%">
-                <span class="btn-icon" id="favorite-icon">☆</span>
-                <span id="favorite-text">收藏邮箱</span>
-              </button>
-            </div>
+
+    <!-- 收件箱 -->
+    <div class="inbox-card" id="list-card" style="display: none;">
+      <h2 style="margin: 0 0 15px 0; font-size: 18px; border-bottom: 1px solid #eee; padding-bottom: 10px;">
+        <span id="box-icon">📨</span> <span id="box-title">收件箱</span>
+        <span class="layui-badge layui-bg-gray" style="margin-left: 10px;">仅保留24小时</span>
+      </h2>
+      <div class="layui-form" style="margin-bottom: 15px;">
+        <div class="layui-form-item" style="margin-bottom: 0;">
+          <div class="layui-input-inline" style="width: 200px;">
+            <select id="tab-inbox" class="layui-input">
+              <option value="inbox">收件箱</option>
+              <option value="sent">发件箱</option>
+            </select>
           </div>
-          
-          <!-- 右侧：邮箱配置 -->
-          <div class="mailbox-config-section">
-            <div class="section-header">
-              <span class="section-icon">⚙️</span>
-              <span class="section-title">邮箱配置</span>
-              <button id="config-toggle" class="sidebar-toggle-btn" title="展开/收起配置">
-                <span id="config-toggle-icon">▾</span>
-              </button>
-            </div>
-            <div class="config-form">
-              <div class="config-item">
-                <label class="config-label">
-                  <span class="label-icon">🌐</span>
-                  <span>邮箱后缀</span>
-                </label>
-                <select id="domain-select" class="select config-select"></select>
-              </div>
-              <div class="config-item">
-                <label class="config-label">
-                  <span class="label-icon">📏</span>
-                  <span>用户名长度</span>
-                </label>
-                <div class="range-container">
-                  <input id="len-range" class="range" type="range" min="8" max="30" step="1" value="8" />
-                  <div class="range-display">
-                    <span id="len-val" class="len-value">8</span>
-                    <span class="len-unit">位</span>
-                  </div>
-                </div>
-              </div>
-               <div class="generate-action">
-                 <div class="generate-buttons" style="display: flex; gap: 8px; margin-bottom: 8px; width: 100%;">
-                   <button id="gen" class="btn btn-generate" style="flex: 1;">
-                     <span class="btn-icon">🎲</span>
-                     <span>随机生成</span>
-                   </button>
-                   <button id="gen-name" class="btn btn-primary" style="flex: 1;" title="使用随机人名生成邮箱">
-                     <span class="btn-icon">👤</span>
-                     <span>随机人名</span>
-                   </button>
-                 </div>
-                 <button id="toggle-custom" class="btn btn-secondary btn-sm" style="width: 100%;" title="自定义邮箱">切换自定义</button>
-               </div>
-            </div>
+          <div class="layui-input-inline" style="width: 300px;">
+            <input type="text" id="search-box" placeholder="搜索发件人/主题" class="layui-input" />
           </div>
+          <button type="button" id="clear-filter" class="layui-btn layui-btn-primary layui-btn-sm">清空</button>
+          <button type="button" id="refresh-emails" class="layui-btn layui-btn-sm">🔄 刷新</button>
         </div>
       </div>
-      <div class="card inbox-card" id="list-card" style="display:none">
-        <div class="listcard-header">
-          <h2 class="listcard-title">
-            <span class="card-icon" id="box-icon">📬</span>
-            <span id="box-title">收件箱</span>
-          </h2>
-          <div class="view-switch">
-            <button id="tab-inbox" class="seg-btn" aria-pressed="true">收件箱</button>
-            <button id="tab-sent" class="seg-btn" aria-pressed="false">发件箱</button>
-          </div>
-          <div id="list-status" class="loading-indicator" style="pointer-events:none" role="status" aria-live="polite">
-            <div id="list-spinner" class="spinner"></div>
-            <span id="list-status-text">加载中…</span>
-          </div>
-        </div>
-        <div class="list-viewport" style="position:relative;contain:layout paint;isolation:isolate;">
-          <div id="list" class="list"></div>
-          <div id="list-pager" class="pager" style="display:none">
-            <button id="prev-page" class="btn btn-ghost btn-sm">上一页</button>
-            <span id="page-info" class="muted" style="min-width:100px;text-align:center"></span>
-            <button id="next-page" class="btn btn-ghost btn-sm">下一页</button>
-          </div>
-        </div>
+      <div id="list-loading" style="text-align: center; padding: 20px; color: #999;">
+        <i class="layui-icon layui-icon-loading layui-anim layui-anim-rotate layui-anim-loop"></i> 加载中...
+      </div>
+      <div id="email-list" class="email-list" style="display: none;"></div>
+      <div id="empty-state" class="empty-state" style="display: none;">
+        <div class="icon">📭</div>
+        <div>暂无邮件</div>
+      </div>
+      <div id="list-pager" style="text-align: center; padding: 15px; display: none;">
+        <button id="prev-page" class="layui-btn layui-btn-sm layui-btn-primary">上一页</button>
+        <span id="page-info" style="padding: 0 15px;"></span>
+        <button id="next-page" class="layui-btn layui-btn-sm layui-btn-primary">下一页</button>
       </div>
     </div>
+  </div>
+
+  <!-- 邮件详情弹窗 -->
+  <div id="email-modal" style="display: none; padding: 20px;">
+    <div id="modal-content"></div>
+  </div>
+
+  <!-- 确认删除弹窗 -->
+  <div id="confirm-modal" style="display: none; padding: 20px;">
+    <div id="confirm-message" style="margin-bottom: 20px;"></div>
+    <div style="text-align: right;">
+      <button id="confirm-cancel" class="layui-btn layui-btn-primary">取消</button>
+      <button id="confirm-ok" class="layui-btn layui-btn-danger">确定</button>
+    </div>
+  </div>
+
+  <!-- 撰写邮件弹窗 -->
+  <div id="compose-modal" style="display: none; padding: 20px;">
+    <form class="layui-form" lay-filter="compose-form">
+      <div class="layui-form-item">
+        <label class="layui-form-label">收件人</label>
+        <div class="layui-input-block">
+          <input type="text" id="compose-to" name="to" lay-verify="required" placeholder="foo@example.com, bar@example.com" class="layui-input" />
+        </div>
+      </div>
+      <div class="layui-form-item">
+        <label class="layui-form-label">发件名称</label>
+        <div class="layui-input-block">
+          <input type="text" id="compose-from-name" name="fromName" placeholder="例如：iDing 支持团队" class="layui-input" />
+        </div>
+      </div>
+      <div class="layui-form-item">
+        <label class="layui-form-label">主题</label>
+        <div class="layui-input-block">
+          <input type="text" id="compose-subject" name="subject" lay-verify="required" placeholder="主题" class="layui-input" />
+        </div>
+      </div>
+      <div class="layui-form-item">
+        <label class="layui-form-label">内容</label>
+        <div class="layui-input-block">
+          <textarea id="compose-body" name="body" rows="10" placeholder="请输入邮件内容" class="layui-textarea"></textarea>
+        </div>
+      </div>
+      <div class="layui-form-item">
+        <div class="layui-input-block">
+          <button lay-submit lay-filter="compose-send" class="layui-btn layui-btn-normal">发送</button>
+          <button type="button" id="compose-cancel" class="layui-btn layui-btn-primary">取消</button>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <!-- 修改密码弹窗 -->
+  <div id="password-modal" style="display: none; padding: 20px;">
+    <div style="background: #fff3cd; padding: 10px; border-radius: 4px; margin-bottom: 15px; color: #856404;">
+      ⚠️ 修改密码后需要重新登录
+    </div>
+    <form class="layui-form" lay-filter="password-form">
+      <div class="layui-form-item">
+        <label class="layui-form-label">当前密码</label>
+        <div class="layui-input-block">
+          <input type="password" id="current-password" name="current" lay-verify="required" placeholder="请输入当前密码" class="layui-input" />
+        </div>
+      </div>
+      <div class="layui-form-item">
+        <label class="layui-form-label">新密码</label>
+        <div class="layui-input-block">
+          <input type="password" id="new-password" name="new" lay-verify="required|minlength:6" placeholder="请输入新密码（至少6位）" class="layui-input" />
+        </div>
+      </div>
+      <div class="layui-form-item">
+        <label class="layui-form-label">确认密码</label>
+        <div class="layui-input-block">
+          <input type="password" id="confirm-password" name="confirm" lay-verify="required|minlength:6" placeholder="请再次输入新密码" class="layui-input" />
+        </div>
+      </div>
+      <div class="layui-form-item">
+        <div class="layui-input-block">
+          <button lay-submit lay-filter="password-submit" class="layui-btn layui-btn-normal">修改密码</button>
+          <button type="button" id="password-cancel" class="layui-btn layui-btn-primary">取消</button>
+        </div>
+      </div>
+    </form>
   </div>
 
   <div id="footer-slot"></div>
-
-  <div class="modal" id="email-modal">
-    <div class="modal-card">
-      <div class="modal-header">
-        <div id="modal-subject">
-          <span class="modal-icon">📧</span>
-          <span>邮件详情</span>
-        </div>
-        <button id="modal-close" class="close">✕</button>
-      </div>
-      <div class="modal-body">
-        <div id="modal-content"></div>
-      </div>
-    </div>
-  </div>
-
-  <div class="modal" id="confirm-modal">
-    <div class="modal-card confirm-card">
-      <div class="modal-header confirm-header">
-        <div>
-          <span class="modal-icon">⚠️</span>
-          <span>确认操作</span>
-        </div>
-        <button id="confirm-close" class="close">✕</button>
-      </div>
-      <div class="modal-body confirm-body">
-        <div id="confirm-message" class="confirm-message"></div>
-        <div class="confirm-actions">
-          <button id="confirm-cancel" class="btn btn-secondary">取消</button>
-          <button id="confirm-ok" class="btn btn-danger">确定</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="modal" id="compose-modal">
-    <div class="modal-card">
-      <div class="modal-header">
-        <div>
-          <span class="modal-icon">✉️</span>
-          <span>新邮件</span>
-        </div>
-        <button id="compose-close" class="close">✕</button>
-      </div>
-      <div class="modal-body">
-        <div class="compose-form">
-          <div class="field-group">
-            <label class="field-label">收件人</label>
-            <input id="compose-to" class="input field-input" type="text" placeholder="foo@example.com, bar@example.com" />
-            <div class="field-hint">多个地址请以逗号分隔</div>
-          </div>
-          <div class="field-group">
-            <label class="field-label">发件名称（可选）</label>
-            <input id="compose-from-name" class="input field-input" type="text" placeholder="例如：iDing 支持团队" />
-          </div>
-          <div class="field-group">
-            <label class="field-label">主题</label>
-            <input id="compose-subject" class="input field-input" type="text" placeholder="主题" />
-          </div>
-          <div class="field-group">
-            <label class="field-label">内容</label>
-            <textarea id="compose-body" class="textarea field-textarea" rows="10" placeholder="请输入邮件内容"></textarea>
-          </div>
-          <div class="compose-actions">
-            <button id="compose-cancel" class="btn btn-secondary">取消</button>
-            <button id="compose-send" class="btn btn-primary">发送</button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  
-
-
+  <script type="module" src="/js/app.js"></script>
+  <script>
+    // 动态加载 footer
+    (async function(){
+      try{
+        const res = await fetch('/templates/footer.html', { cache: 'no-cache' });
+        const html = await res.text();
+        const slot = document.getElementById('footer-slot');
+        if (slot){ slot.outerHTML = html; }
+      }catch(_){}
+    })();
+  </script>
+</body>
+</html>

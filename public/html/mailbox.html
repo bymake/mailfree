@@ -7,14 +7,28 @@
   <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate" />
   <meta http-equiv="Pragma" content="no-cache" />
   <meta http-equiv="Expires" content="0" />
-  <style>.precheck-hide body{ visibility: hidden !important; }</style>
   <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
   <link rel="shortcut icon" href="/favicon.svg" type="image/svg+xml" />
-  <link rel="stylesheet" href="/css/app.css" />
-  <link rel="stylesheet" href="/css/mailbox.css" />
+  <link rel="stylesheet" href="https://unpkg.com/layui/dist/css/layui.css" />
+  <script src="https://unpkg.com/layui/dist/layui.js"></script>
+  <style>
+    body { margin: 0; background: #f0f2f5; }
+    .header { background: #001529; color: #fff; padding: 0 20px; height: 60px; line-height: 60px; }
+    .header .logo { font-size: 20px; font-weight: bold; }
+    .header .nav { float: right; }
+    .header .nav a { color: #fff; margin-left: 20px; text-decoration: none; }
+    .main-container { padding: 20px; max-width: 1200px; margin: 0 auto; }
+    .mailbox-panel { background: #fff; border-radius: 4px; padding: 20px; margin-bottom: 20px; }
+    .mailbox-panel h2 { margin: 0 0 15px 0; font-size: 18px; border-bottom: 1px solid #eee; padding-bottom: 10px; }
+    .mailbox-display { font-size: 24px; color: #1890ff; margin: 15px 0; word-break: break-all; }
+    .action-buttons { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 15px; }
+    .info-row { display: flex; gap: 15px; margin-bottom: 10px; }
+    .inbox-card { background: #fff; border-radius: 4px; padding: 20px; }
+    .email-table { width: 100%; }
+    .email-table th { background: #fafafa; }
+  </style>
   <script src="/js/auth-guard.js" defer></script>
   <script>
-    // 访问邮箱页先做前端快速鉴权，仅允许 mailbox 角色
     (function(){
       fetch('/api/session', { headers: { 'Cache-Control': 'no-cache' } })
         .then(r => r.ok ? r.json() : Promise.reject('unauth'))
@@ -23,11 +37,9 @@
             try{ document.documentElement.classList.remove('precheck-hide'); }catch(_){ }
             return;
           }
-          // 其他角色：回首页
           location.replace('/');
         })
         .catch(() => {
-          // 未登录：进入加载页做鉴权
           if (window.AuthGuard) { window.AuthGuard.goLoading('/html/mailbox.html', '正在校验权限…'); }
           else { location.replace('/templates/loading.html?redirect=%2Fhtml%2Fmailbox.html&status=' + encodeURIComponent('正在校验权限…')); }
         });
@@ -35,193 +47,133 @@
   </script>
 </head>
 <body>
-<div class="topbar">
-  <div class="topbar-inner">
-    <div class="brand">
-      <span class="brand-icon">📧</span>
-      <span class="brand-text">iDing's临时邮箱</span>
-    </div>
-    <div id="role-badge" class="role-badge" title="邮箱用户">邮箱用户</div>
-    <div class="nav-actions">
-      <a id="repo" class="btn btn-ghost" href="https://github.com/idinging/freemail" target="_blank" rel="noopener noreferrer" title="GitHub 开源仓库">
-        <span class="btn-icon">🔗</span>
-        <span class="btn-text">GitHub</span>
-      </a>
-      <button id="logout" class="btn btn-secondary" title="退出登录">
-        <span class="btn-icon">🚪</span>
-        <span class="btn-text">退出登录</span>
-      </button>
+  <div class="header">
+    <span class="logo">📧 iDing's临时邮箱</span>
+    <div class="nav">
+      <a id="repo" href="https://github.com/idinging/freemail" target="_blank">GitHub</a>
+      <a id="logout" href="javascript:void(0)">退出登录</a>
     </div>
   </div>
-</div>
 
-<div class="toast" id="toast"></div>
-
-<div class="container mailbox-container">
-  <div class="main mailbox-main">
+  <div class="main-container">
     <!-- 邮箱信息卡片 -->
-    <div class="card mailbox-info-card">
-      <h2>
-        <span class="card-icon">📬</span>
-        我的邮箱
+    <div class="mailbox-panel">
+      <h2>📬 我的邮箱</h2>
+      <div class="mailbox-display" id="current-mailbox">加载中...</div>
+      <div class="action-buttons">
+        <button id="copy-mailbox" class="layui-btn layui-btn-primary">📋 复制</button>
+        <button id="change-password" class="layui-btn layui-btn-normal">🔒 修改密码</button>
+      </div>
+      <div class="info-row" style="margin-top: 20px;">
+        <span class="layui-badge">未读 <span id="unread-count">0</span></span>
+        <span class="layui-badge layui-bg-gray">全部 <span id="total-count">0</span></span>
+        <div style="margin-left: auto;">
+          <input type="checkbox" id="auto-refresh" lay-skin="switch" lay-text="自动刷新|关闭" title="自动刷新" />
+          <select id="refresh-interval" class="layui-input layui-inline" style="width: 100px;">
+            <option value="10">10秒</option>
+            <option value="30" selected>30秒</option>
+            <option value="60">60秒</option>
+          </select>
+        </div>
+      </div>
+      <div style="margin-top: 10px;">
+        <div class="layui-input-inline" style="width: 300px;">
+          <input type="text" id="search-box" placeholder="搜索发件人/主题" class="layui-input" />
+        </div>
+        <button id="clear-filter" class="layui-btn layui-btn-primary layui-btn-sm">清空</button>
+        <button id="refresh-emails" class="layui-btn layui-btn-sm">🔄 刷新</button>
+      </div>
+    </div>
+
+    <!-- 收件箱 -->
+    <div class="inbox-card">
+      <h2 style="margin: 0 0 15px 0; font-size: 18px; border-bottom: 1px solid #eee; padding-bottom: 10px;">
+        <span>📨</span> 收件箱 <span class="layui-badge layui-bg-gray" style="margin-left: 10px;">仅保留24小时</span>
       </h2>
-      <div class="mailbox-info">
-        <div class="mailbox-display">
-          <span class="mailbox-icon">📧</span>
-          <span id="current-mailbox" class="mailbox-address">加载中...</span>
-          <button id="copy-mailbox" class="btn btn-secondary btn-sm" title="复制邮箱地址">
-            <span class="btn-icon">📋</span>
-            <span>复制</span>
-          </button>
-        <!-- 修改密码 -->
-          <button id="change-password" class="btn btn-ghost btn-sm" title="修改密码">
-            <span class="btn-icon">🔒</span>
-            <span>修改密码</span>
-          </button>
-        </div>
-        <div class="mailbox-toolbar">
-          <div class="toolbar-left">
-            <span class="chip chip-unread">未读 <span id="unread-count">0</span></span>
-            <span class="chip chip-total">全部 <span id="total-count">0</span></span>
-          </div>
-          <div class="toolbar-right">
-            <label class="toggle" title="开启后按间隔自动刷新">
-              <input id="auto-refresh" type="checkbox" />
-              <span>自动刷新</span>
-            </label>
-            <select id="refresh-interval" class="select select-sm" title="刷新间隔">
-              <option value="10">10秒</option>
-              <option value="30" selected>30秒</option>
-              <option value="60">60秒</option>
-            </select>
-            <input id="search-box" class="input input-sm" placeholder="搜索发件人/主题" />
-            <button id="clear-filter" class="btn btn-ghost btn-sm" title="清空筛选">清空</button>
-            <button id="refresh-emails" class="btn btn-ghost" title="立即刷新">
-              <span class="btn-icon">🔄</span>
-              <span>刷新</span>
-            </button>
-          </div>
-        </div>
+      <div id="list-loading" style="text-align: center; padding: 40px; color: #999;">
+        <i class="layui-icon layui-icon-loading layui-anim layui-anim-rotate layui-anim-loop" style="font-size: 30px;"></i>
+        <div style="margin-top: 10px;">加载中...</div>
       </div>
-    </div>
-
-    <!-- 收件箱卡片 -->
-    <div class="card inbox-card">
-      <div class="listcard-header">
-        <h2 class="listcard-title">
-          <span class="card-icon">📨</span>
-          <span>收件箱</span>
-          <span class="retention-hint">仅保留24小时</span>
-        </h2>
-        <div id="list-loading" class="loading-indicator" style="pointer-events:none" role="status" aria-live="polite">
-          <div class="spinner"></div>
-          <span>加载中…</span>
-        </div>
+      <table id="email-table" class="layui-hide" lay-filter="email-table"></table>
+      <div id="empty-state" class="empty-state" style="display: none; text-align: center; padding: 60px 0; color: #999;">
+        <div style="font-size: 48px; margin-bottom: 15px;">📭</div>
+        <div>暂无邮件</div>
       </div>
-      <div class="list-viewport" style="position:relative;contain:layout paint;isolation:isolate;">
-        <div id="email-list" class="list"></div>
-        <div id="empty-state" class="empty-state" style="display:none">
-          <div class="empty-icon">📭</div>
-          <div class="empty-title">暂无邮件</div>
-        </div>
-        <div id="list-pager" class="pager" style="display:none">
-          <button id="prev-page" class="btn btn-ghost btn-sm">上一页</button>
-          <span id="page-info" class="muted" style="min-width:100px;text-align:center"></span>
-          <button id="next-page" class="btn btn-ghost btn-sm">下一页</button>
-        </div>
+      <div id="list-pager" style="text-align: center; padding: 15px; display: none;">
+        <button id="prev-page" class="layui-btn layui-btn-sm layui-btn-primary">上一页</button>
+        <span id="page-info" style="padding: 0 15px;"></span>
+        <button id="next-page" class="layui-btn layui-btn-sm layui-btn-primary">下一页</button>
       </div>
     </div>
   </div>
-</div>
 
-<div id="footer-slot"></div>
+  <div id="footer-slot"></div>
 
-<!-- 邮件详情模态框 -->
-<div class="modal" id="email-modal">
-  <div class="modal-card">
-    <div class="modal-header">
-      <div id="modal-subject">
-        <span class="modal-icon">📧</span>
-        <span>邮件详情</span>
+  <!-- 邮件详情模板 -->
+  <script type="text/html" id="email-detail-tpl">
+    <div style="padding: 20px;">
+      <div style="border-bottom: 1px solid #eee; padding-bottom: 15px; margin-bottom: 15px;">
+        <h3 id="modal-subject" style="margin: 0 0 10px 0;"></h3>
+        <div id="modal-from" style="color: #666; font-size: 14px;"></div>
+        <div id="modal-date" style="color: #999; font-size: 12px; margin-top: 5px;"></div>
       </div>
-      <button id="modal-close" class="close">✕</button>
+      <div id="modal-content" style="line-height: 1.8;"></div>
     </div>
-    <div class="modal-body">
-      <div id="modal-content"></div>
+  </script>
+
+  <!-- 确认删除弹窗 -->
+  <div id="confirm-modal" style="display: none; padding: 20px; text-align: center;">
+    <div id="confirm-message" style="margin-bottom: 20px; font-size: 16px;"></div>
+    <div>
+      <button id="confirm-cancel" class="layui-btn layui-btn-primary">取消</button>
+      <button id="confirm-ok" class="layui-btn layui-btn-danger">确定</button>
     </div>
   </div>
-</div>
+
+  <!-- 修改密码弹窗 -->
+  <div id="password-modal" style="display: none; padding: 20px;">
+    <div style="background: #fff3cd; padding: 10px; border-radius: 4px; margin-bottom: 15px; color: #856404;">
+      ⚠️ 修改密码后需要重新登录
+    </div>
+    <form class="layui-form" lay-filter="password-form">
+      <div class="layui-form-item">
+        <label class="layui-form-label">当前密码</label>
+        <div class="layui-input-block">
+          <input type="password" id="current-password" name="current" lay-verify="required" class="layui-input" />
+        </div>
+      </div>
+      <div class="layui-form-item">
+        <label class="layui-form-label">新密码</label>
+        <div class="layui-input-block">
+          <input type="password" id="new-password" name="new" lay-verify="required|minlength:6" class="layui-input" />
+        </div>
+      </div>
+      <div class="layui-form-item">
+        <label class="layui-form-label">确认密码</label>
+        <div class="layui-input-block">
+          <input type="password" id="confirm-password" name="confirm" lay-verify="required|minlength:6" class="layui-input" />
+        </div>
+      </div>
+      <div class="layui-form-item">
+        <div class="layui-input-block">
+          <button lay-submit lay-filter="password-submit" class="layui-btn layui-btn-normal">修改密码</button>
+          <button type="button" id="password-cancel" class="layui-btn layui-btn-primary">取消</button>
+        </div>
+      </div>
+    </form>
+  </div>
+
   <script src="/js/toast-utils.js"></script>
   <script type="module" src="/js/mailbox.js"></script>
-<script>
-  // 动态加载公共 footer 模板
-  (async function(){
-    try{
-      const res = await fetch('/templates/footer.html', { cache: 'no-cache' });
-      const html = await res.text();
-      const slot = document.getElementById('footer-slot');
-      if (slot){
-        slot.outerHTML = html;
-        setTimeout(()=>{ const y=document.getElementById('footer-year'); if (y) y.textContent=new Date().getFullYear(); },0);
-      }
-    }catch(_){ }
-  })();
-</script>
+  <script>
+    (async function(){
+      try{
+        const res = await fetch('/templates/footer.html', { cache: 'no-cache' });
+        const html = await res.text();
+        const slot = document.getElementById('footer-slot');
+        if (slot){ slot.outerHTML = html; }
+      }catch(_){}
+    })();
+  </script>
 </body>
 </html>
-<!-- 确认删除模态框 -->
-<div class="modal" id="confirm-modal">
-  <div class="modal-card confirm-card">
-    <div class="modal-header confirm-header">
-      <div>
-        <span class="modal-icon">⚠️</span>
-        <span>确认操作</span>
-      </div>
-      <button id="confirm-close" class="close">✕</button>
-    </div>
-    <div class="modal-body confirm-body">
-      <div id="confirm-message" class="confirm-message"></div>
-      <div class="confirm-actions">
-        <button id="confirm-cancel" class="btn btn-secondary">取消</button>
-        <button id="confirm-ok" class="btn btn-danger">确定</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- 修改密码模态框 -->
-<div class="modal" id="password-modal">
-  <div class="modal-card">
-    <div class="modal-header">
-      <div>
-        <span class="modal-icon">🔒</span>
-        <span>修改密码</span>
-      </div>
-      <button id="password-close" class="close">✕</button>
-    </div>
-    <div class="modal-body">
-      <div class="password-hint">
-        <span class="hint-icon">⚠️</span>
-        <span>修改密码后需要重新登录</span>
-      </div>
-      <form id="password-form">
-        <div class="form-group">
-          <label for="current-password">当前密码</label>
-          <input type="password" id="current-password" class="input" placeholder="请输入当前密码" required />
-        </div>
-        <div class="form-group">
-          <label for="new-password">新密码</label>
-          <input type="password" id="new-password" class="input" placeholder="请输入新密码（至少6位）" minlength="6" required />
-        </div>
-        <div class="form-group">
-          <label for="confirm-password">确认新密码</label>
-          <input type="password" id="confirm-password" class="input" placeholder="请再次输入新密码" minlength="6" required />
-        </div>
-        <div class="form-actions">
-          <button type="button" id="password-cancel" class="btn btn-secondary">取消</button>
-          <button type="submit" id="password-submit" class="btn btn-primary">修改密码</button>
-        </div>
-      </form>
-    </div>
-  </div>
-</div>
