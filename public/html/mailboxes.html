@@ -30,15 +30,44 @@
     .modal-body { padding: 20px; }
     .modal-footer { padding: 15px 20px; border-top: 1px solid #eee; display: flex; gap: 10px; justify-content: flex-end; }
     .close-btn { background: none; border: none; font-size: 20px; cursor: pointer; }
-    /* 表格卡片 */
-    .table-card .mailbox-card { background: #fff; border: 1px solid #eee; border-radius: 8px; padding: 15px; margin-bottom: 15px; cursor: pointer; transition: box-shadow 0.2s; }
-    .table-card .mailbox-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
-    .table-card .mailbox-card .address { font-size: 16px; font-weight: 500; color: #333; margin-bottom: 8px; }
-    .table-card .mailbox-card .meta { font-size: 12px; color: #999; margin-bottom: 10px; }
-    .table-card .mailbox-card .actions { display: flex; gap: 8px; flex-wrap: wrap; }
+    /* 表格卡片 - 网格视图 */
     .table-card .mailbox-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 15px; }
+    .table-card .mailbox-card { background: #fff; border: 1px solid #eee; border-radius: 8px; padding: 15px; margin-bottom: 0; cursor: pointer; transition: box-shadow 0.2s; position: relative; }
+    .table-card .mailbox-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+    .table-card .mailbox-card .addr { font-size: 14px; font-weight: 600; color: #333; margin-bottom: 6px; word-break: break-all; }
+    .table-card .mailbox-card .pwd, .table-card .mailbox-card .login, .table-card .mailbox-card .time { font-size: 12px; color: #999; margin-bottom: 4px; }
+    .table-card .mailbox-card .actions { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 10px; }
+    .table-card .mailbox-card .actions .btn-icon { background: #f5f5f5; border: 1px solid #d9d9d9; border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 12px; }
+    .table-card .mailbox-card .actions .btn-icon:hover { background: #e6e6e6; }
+    .table-card .mailbox-card .actions .btn-icon.active { background: #fff7e6; border-color: #ffbb33; }
+    .pin-badge, .favorite-badge, .forward-badge { position: absolute; top: 8px; font-size: 12px; }
+    .pin-badge { right: 8px; }
+    .favorite-badge { top: 8px; right: 28px; }
+    .forward-badge { top: 8px; right: 48px; }
+    /* 列表视图 */
+    .mailbox-list-item { background: #fff; border: 1px solid #eee; border-radius: 8px; padding: 12px 15px; margin-bottom: 10px; display: flex; align-items: center; gap: 10px; cursor: pointer; }
+    .mailbox-list-item:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+    .mailbox-list-item .pin-indicator { width: 20px; text-align: center; font-size: 12px; }
+    .mailbox-list-item .pin-placeholder { visibility: hidden; }
+    .mailbox-list-item .mailbox-info { flex: 1; min-width: 0; }
+    .mailbox-list-item .mailbox-info .addr { font-size: 14px; font-weight: 600; color: #333; margin-bottom: 4px; word-break: break-all; }
+    .mailbox-list-item .mailbox-info .meta { font-size: 12px; color: #999; display: flex; gap: 8px; flex-wrap: wrap; }
+    .mailbox-list-item .list-actions { display: flex; gap: 6px; flex-wrap: wrap; }
+    .mailbox-list-item .list-actions .btn { background: #f5f5f5; border: 1px solid #d9d9d9; border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 12px; }
+    .mailbox-list-item .list-actions .btn:hover { background: #e6e6e6; }
+    .mailbox-list-item .list-actions .btn.active { background: #fff7e6; border-color: #ffbb33; }
     .skeleton { background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite; border-radius: 4px; }
     @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+    /* 骨架屏 */
+    .skeleton-card { background: #fff; border: 1px solid #eee; border-radius: 8px; padding: 15px; }
+    .skeleton-line { height: 12px; background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite; border-radius: 4px; margin-bottom: 8px; }
+    .skeleton-line.title { width: 60%; }
+    .skeleton-line.subtitle { width: 40%; }
+    .skeleton-line.text { width: 80%; }
+    .skeleton-line.time { width: 50%; }
+    .skeleton-list-item { background: #fff; border: 1px solid #eee; border-radius: 8px; padding: 12px 15px; display: flex; gap: 10px; }
+    .skeleton-list-item .skeleton-pin { width: 20px; height: 20px; }
+    .skeleton-list-item .skeleton-content { flex: 1; }
     /* 按钮样式 */
     .layui-btn { border: 1px solid #d9d9d9; background: #fff; color: #333; }
     .layui-btn-primary { background: #1890ff; color: #fff; border-color: #1890ff; }
